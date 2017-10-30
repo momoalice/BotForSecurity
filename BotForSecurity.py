@@ -12,7 +12,7 @@ with open('nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
 item_list = d["CVE_Items"]
-default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Sample <NUM>\n2. Severity: Get events with specified severity (low, medium, high)\n 3. Search: Search for a specific keyword and get info\n 4. Types: Get all the types of insecure activities"
+default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Sample <NUM>\n2. Severity: Get events with specified severity (low, medium, high)\n \t\t subcommand: Specific <ID> \n 3. Search: Search for a specific keyword and get info\n \t\t subcommand: Specific <ID>"
 
 slack_client = SlackClient(BOT_TOKEN)
 
@@ -66,13 +66,13 @@ def postSearch(message, user, channel,last_command):
 		for cve in item_list:
 			curr_des = cve["cve"]["description"]["description_data"][0]["value"]
 			if keyword.lower() in curr_des.lower():
-				response += str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
+				response += cve["cve"]["CVE_data_meta"]["ID"]+" "+ str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
 		post_message(message=response, channel=channel)
 	return "Search"
 
 def postSeverity(message, user, channel,last_command):
 	if len(message) != 2:
-		response = "Invalid input. Sample command takes in one argument. Please reenter."
+		response = "Invalid input. Severity command takes in one argument. Please reenter."
 		post_message(message=response, channel=channel)
 	else:
 		response = ""
@@ -86,27 +86,56 @@ def postSeverity(message, user, channel,last_command):
 				curr_id = cve["cve"]["CVE_data_meta"]["ID"]
 				curr_des = cve["cve"]["description"]["description_data"][0]["value"]
 				response += curr_id + " " + str(cve["lastModifiedDate"]) + " " +curr_des + "\n\n"
+		response += "See more info about a specific event by id in form of: Specific CVE-xxxx-xxxx\n"
 		post_message(message=response, channel=channel)
 	return "Severity"
 
+def postSpecific(message, user, channel,last_command):
+	if len(message) != 2:
+		response = "Invalid input. Specific command takes in one argument. Please reenter."
+		post_message(message=response,channel=channel)
+		return "Severity"
+	else:
+		response = ""
+		for cve in item_list:
+			curr_id = cve["cve"]["CVE_data_meta"]["ID"]
+			if curr_id == message[1]:
+				curr_des = cve["cve"]["description"]["description_data"][0]["value"]
+				try :
+					curr_severity = cve["impact"]["baseMetricV2"]["severity"]
+				except KeyError:
+					curr_severity = ""
+				curr_time = cve["lastModifiedDate"]
+				response += "ID:" + curr_id + "\n"
+				response += "Severity:" + curr_severity + "\n"
+				response += "Time: " + curr_time + '\n'
+				response += "Description: " + curr_des + '\n'
+				response += "References: \n"
+				for url in cve["cve"]["references"]["reference_data"]:
+					response += url["url"] +"\n"
+				break
+		post_message(message=response,channel=channel)
+		return "Specific"
+
 
 def handle_message(message, user, channel,last_command):
+	if type(message) is not str:
+		return last_command
     # TODO Implement later
-    message = message.split(" ")
-    if message[0].lower() == 'counts':
-    	return postCounts(message, user, channel,last_command)
-    elif last_command.lower() == "counts" and message[0] == "Sample":
-    	return postSample(message, user, channel,last_command)
-    elif message[0].lower() == 'severity':
-    	return postSeverity(message, user, channel,last_command)
-    elif message[0].lower() == 'search':
-    	postSearch(message, user, channel,last_command)
-    elif message[0].lower() == 'yypes':
-    	response == 'To be implemented'
-    	post_message(message=response, channel=channel)
-    else:
-    	post_message(message=default_msg, channel=channel)
-    return message[0]
+	message = message.split(" ")
+	if message[0].lower() == 'counts':
+		return postCounts(message, user, channel,last_command)
+	elif last_command.lower() == "counts" and message[0].lower() == "Sample":
+		return postSample(message, user, channel,last_command)
+	elif message[0].lower() == 'severity':
+		return postSeverity(message, user, channel,last_command)
+	elif message[0].lower() == 'search':
+		return postSearch(message, user, channel,last_command)
+	elif last_command.lower() == "severity" or last_command.lower() == "search" and message[0].lower() == "specific":
+		return postSpecific(message, user, channel,last_command)
+	else:
+		post_message(message=default_msg, channel=channel)
+	return message[0]
 
     
     # post_message(message=default_msg, channel=channel)
