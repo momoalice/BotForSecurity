@@ -12,7 +12,7 @@ with open('nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
 item_list = d["CVE_Items"]
-default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Access <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Latest: Get the time for the most recent insecure activity\n 4. Types: Get all the types of insecure activities"
+default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Sample <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Search: Search for a specific keyword and get info\n 4. Types: Get all the types of insecure activities"
 
 slack_client = SlackClient(BOT_TOKEN)
 
@@ -42,9 +42,9 @@ def handle_message(message, user, channel,last_command):
     if message[0] == 'Counts':
     	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Access <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
     	post_message(message=response, channel=channel)
-    elif last_command == "Counts" and message[0] == "Access":
+    elif last_command == "Counts" and message[0] == "Sample":
     	if len(message) != 2:
-    		response = "Invalid input. Access command takes in one argument. Please reenter"
+    		response = "Invalid input. Sample command takes in one argument. Please reenter"
     		post_message(message=response, channel=channel)
     		return "Counts"
     	else :
@@ -57,9 +57,18 @@ def handle_message(message, user, channel,last_command):
     elif message[0] == 'Recent':
     	response = 'To be implemented'
     	post_message(message=response, channel=channel)
-    elif message[0] == 'Latest':
-    	response = 'To be implemented'
-    	post_message(message=response, channel=channel)
+    elif message[0] == 'Search':
+    	if len(message) != 2:
+    		response = "Invalid input. Sample command takes in one argument. Please reenter."
+    		post_message(message=response, channel=channel)
+    	else :
+    		response = ""
+    		keyword = message[1]
+    		for cve in item_list:
+    			curr_des = cve["cve"]["description"]["description_data"][0]["value"]
+    			if keyword in curr_des:
+    				response += str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
+    		post_message(message=response, channel=channel)
     elif message[0] == 'Types':
     	response == 'To be implemented'
     	post_message(message=response, channel=channel)
