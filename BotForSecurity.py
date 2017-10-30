@@ -10,10 +10,9 @@ SOCKET_DELAY = 1
 with open('nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
-default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t subcommand Access <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Latest: Get the time for the most recent insecure activity\n 4. Types: Get all the types of insecure activities"
+default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Access <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Latest: Get the time for the most recent insecure activity\n 4. Types: Get all the types of insecure activities"
 
 slack_client = SlackClient(BOT_TOKEN)
-
 
 
 def get_mention(user):
@@ -35,22 +34,32 @@ def is_for_me(event):
         channel = event.get('channel')
         if slack_mention in text.strip().split():
             return True
-def handle_message(message, user, channel):
+def handle_message(message, user, channel,last_command):
     # TODO Implement later
-    if message == 'Counts':
+    message = message.split(" ")
+    if message[0] == 'Counts':
     	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Access <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
     	post_message(message=response, channel=channel)
-    elif message == 'Recent':
+    elif last_command == "Counts" and message[0] == "Access":
+    	if len(message) != 2:
+    		response = "Invalid input. Access command takes in one argument. Please reenter"
+    		post_message(message=response, channel=channel)
+    		return "Counts"
+    	else :
+    		response = message[1] + " to be implemented"
+    		post_message(message=response, channel=channel)
+    elif message[0] == 'Recent':
     	response = 'To be implemented'
     	post_message(message=response, channel=channel)
-    elif message == 'Latest':
+    elif message[0] == 'Latest':
     	response = 'To be implemented'
     	post_message(message=response, channel=channel)
-    elif message == 'Types':
+    elif message[0] == 'Types':
     	response == 'To be implemented'
     	post_message(message=response, channel=channel)
     else:
     	post_message(message=default_msg, channel=channel)
+    return message[0]
 
     
     # post_message(message=default_msg, channel=channel)
@@ -61,14 +70,14 @@ def post_message(message, channel):
 def run():
     if slack_client.rtm_connect():
         print('is ON...')
-
+        last_command = ""
         while True:
             event_list = slack_client.rtm_read()
             if len(event_list) > 0:
                 for event in event_list:
                     print(event)
                     if is_for_me(event):
-                        handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
+                        last_command = handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'), last_command=last_command)
             time.sleep(SOCKET_DELAY)
     else:
         print('[!] Connection to Slack failed.')
