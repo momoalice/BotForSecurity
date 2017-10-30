@@ -37,7 +37,7 @@ def is_for_me(event):
         if slack_mention in text.strip().split():
             return True
 def postCounts(message, user, channel,last_command):
-	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Access <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
+	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Sample <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
 	post_message(message=response, channel=channel)
 	return "Counts"
 
@@ -125,7 +125,7 @@ def handle_message(message, user, channel,last_command):
 	message = message.split(" ")
 	if message[0].lower() == 'counts':
 		return postCounts(message, user, channel,last_command)
-	elif last_command.lower() == "counts" and message[0].lower() == "Sample":
+	elif last_command.lower() == "counts" and message[0].lower() == "sample":
 		return postSample(message, user, channel,last_command)
 	elif message[0].lower() == 'severity':
 		return postSeverity(message, user, channel,last_command)
@@ -135,10 +135,9 @@ def handle_message(message, user, channel,last_command):
 		return postSpecific(message, user, channel,last_command)
 	else:
 		post_message(message=default_msg, channel=channel)
-	return message[0]
+		return last_command
 
     
-    # post_message(message=default_msg, channel=channel)
 
 def post_message(message, channel):
     slack_client.api_call('chat.postMessage', channel=channel,
