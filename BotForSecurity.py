@@ -95,7 +95,7 @@ def postSpecific(message,last_command):
 	rtn_msg = "Specific"
 	if len(message) != 2:
 		response = "Invalid input. Specific command takes in one argument. Please reenter."
-		rtn_msg =  "Severity"
+		rtn_msg =  last_command
 	else:
 		response = ""
 		for cve in item_list:

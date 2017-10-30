@@ -13,7 +13,7 @@ class TestBot(unittest.TestCase):
 
 	def test_specific(self):
 		expected_error_output = "Invalid input. Specific command takes in one argument. Please reenter."
-		self.assertTrue(BotForSecurity.postSpecific("Specific", "Search")[0] == expected_error_output and BotForSecurity.postSpecific("Specific", "Search")[1] == "Search")
+		self.assertTrue(BotForSecurity.postSpecific("Specific", "Search")[0] == expected_error_output and BotForSecurity.postSpecific("Specific", "Search")[1].lower() == "search")
 
 	def test_token(self):
 		self.assertTrue(os.environ.get('SLACK_BOT_TOKEN') != None)
