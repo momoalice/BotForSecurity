@@ -37,4 +37,4 @@ I have set up the template for unit testing and now I am modifying my main progr
 
 I implemented them by first created the skeleton that specify all the command I want to implement and then implement them one by one. For each functionality, I refract out the kernal code for it into a new helper method so that I could later maintain it and modify it more easily without creating destruction to other part. I tested each one of them after finishing its implementation. After finishing all the functionalities of it, I tested it integratively on Slack also. 
 
-Because I separate out all the functionalitied, I think I could probably do unit test in code by not sending response to Slack but just do some local testing of my result. I do not have enough time for this now but it could be easily done later and I will keep improving my program further. 
+I have finished the unit test for Counts functionality 
