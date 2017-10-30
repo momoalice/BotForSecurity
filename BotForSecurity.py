@@ -45,23 +45,21 @@ def postSample(message, last_command):
 	response = ""
 	rtn_msg = "Sample"
 	if len(message) != 2:
-		response = "Invalid input. Sample command takes in one argument. Please reenter"
-		post_message(message=response, channel=channel)
-		return "Counts"
+		response = "Invalid input. Sample command takes in one argument. Please reenter."
+		rtn_msg =  last_command
 	else :
 		rdm_list = [item_list[i] for i in sorted(random.sample(range(len(item_list)),int(message[1])))]
 		response = ""
 		for i in range((len(rdm_list))):
 			curr_cve = rdm_list[i]
 			response += str(i+1) +" " +curr_cve["cve"]["description"]["description_data"][0]["value"] + "\n"
-		post_message(message=response, channel=channel)
 	return response, rtn_msg
 
 def postSearch(message,last_command):
 	response = ""
 	rtn_msg = "Search"
 	if len(message) != 2:
-		response = "Invalid input. Sample command takes in one argument. Please reenter."
+		response = "Invalid input. Search command takes in one argument. Please reenter."
 		rtn_msg = last_command
 	else :
 		keyword = message[1]
@@ -115,6 +113,8 @@ def postSpecific(message,last_command):
 				for url in cve["cve"]["references"]["reference_data"]:
 					response += url["url"] +"\n"
 				break
+		if response == "":
+			response = "No CVE with this ID."
 	return response, rtn_msg
 
 
@@ -128,13 +128,13 @@ def handle_message(message, user, channel,last_command):
 	if message[0].lower() == 'counts':
 		response, rtn_msg = postCounts(message, last_command)
 	elif last_command.lower() == "counts" and message[0].lower() == "sample":
-		response, rtn_msg =  postSample(message, user, channel,last_command)
+		response, rtn_msg =  postSample(message, last_command)
 	elif message[0].lower() == 'severity':
-		response, rtn_msg = postSeverity(message, user, channel,last_command)
+		response, rtn_msg = postSeverity(message, last_command)
 	elif message[0].lower() == 'search':
-		response, rtn_msg = postSearch(message, user, channel,last_command)
+		response, rtn_msg = postSearch(message, last_command)
 	elif last_command.lower() == "severity" or last_command.lower() == "search" and message[0].lower() == "specific":
-		response, rtn_msg = postSpecific(message, user, channel,last_command)
+		response, rtn_msg = postSpecific(message, last_command)
 	else:
 		rtn_msg = last_command
 	post_message(message = response, channel=channel)
@@ -153,7 +153,6 @@ def run():
             event_list = slack_client.rtm_read()
             if len(event_list) > 0:
                 for event in event_list:
-                    print(event)
                     if is_for_me(event):
                         last_command = handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'), last_command=last_command)
             time.sleep(SOCKET_DELAY)
