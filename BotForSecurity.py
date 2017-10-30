@@ -12,7 +12,7 @@ with open('nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
 item_list = d["CVE_Items"]
-default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Sample <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Search: Search for a specific keyword and get info\n 4. Types: Get all the types of insecure activities"
+default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Sample <NUM>\n2. Severity: Get events with specified severity (low, medium, high)\n 3. Search: Search for a specific keyword and get info\n 4. Types: Get all the types of insecure activities"
 
 slack_client = SlackClient(BOT_TOKEN)
 
@@ -70,17 +70,35 @@ def postSearch(message, user, channel,last_command):
 		post_message(message=response, channel=channel)
 	return "Search"
 
+def postSeverity(message, user, channel,last_command):
+	if len(message) != 2:
+		response = "Invalid input. Sample command takes in one argument. Please reenter."
+		post_message(message=response, channel=channel)
+	else:
+		response = ""
+		severity = message[1].lower()
+		for cve in item_list:
+			try:
+				curr_severity = cve["impact"]["baseMetricV2"]["severity"]
+			except KeyError:
+				curr_severity = None
+			if curr_severity != None and curr_severity.lower() == severity:
+				curr_id = cve["cve"]["CVE_data_meta"]["ID"]
+				curr_des = cve["cve"]["description"]["description_data"][0]["value"]
+				response += curr_id + " " + str(cve["lastModifiedDate"]) + " " +curr_des + "\n\n"
+		post_message(message=response, channel=channel)
+	return "Severity"
+
 
 def handle_message(message, user, channel,last_command):
     # TODO Implement later
     message = message.split(" ")
     if message[0].lower() == 'counts':
     	return postCounts(message, user, channel,last_command)
-    elif last_command == "Counts" and message[0] == "Sample":
+    elif last_command.lower() == "counts" and message[0] == "Sample":
     	return postSample(message, user, channel,last_command)
-    elif message[0].lower() == 'recent':
-    	response = 'To be implemented'
-    	post_message(message=response, channel=channel)
+    elif message[0].lower() == 'severity':
+    	return postSeverity(message, user, channel,last_command)
     elif message[0].lower() == 'search':
     	postSearch(message, user, channel,last_command)
     elif message[0].lower() == 'yypes':
