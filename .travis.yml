@@ -1,6 +1,11 @@
 language: python
 python:
-  - "3.6"
-install: "pip3 install -r requirements.txt"
-script: 
-  - python test_bot.py
+- '3.6'
+install: pip3 install -r requirements.txt
+script:
+- python test_bot.py
+notifications:
+  slack: contrastmotong:a9YGottEZvCkoawETdvQrlEY
+env:
+  global:
+    secure: sIW1QsrOVvIKMCzCJBT2KCBoO0OcmAVLf45nc4d/ViBx/k37kxNtmnYCIqjm+qHgGENJRqfGPyibNKODCC8jLtgTlOpuAtIO8NOeAjFA21+HSLXOfFWCJRQcHPoCXEKc6IG4XWRbNs/tkoBSiDeoMHJACmg8thwYuKsgT4siYHkO2BpbFq51RZ59l6TksBakkuMIACZ+wTCw8K63YYWg0LmvJkcMbwaFjwmlWqZ8o1fGsxZ71vxCaKB98PyAwHv5G9mxaR0E1FV1c5+0Pa6eK5/LvON+Kue0AGnOaoUAvTHe7Lhn+0pYKVTh4Pg5xGBeO2dlVhSUHo4X3yrJG5fC29wBJYJlNNI0Q95o6KPFUmQHixdF2nF9d4IDEPUvyj6GLaFBDPnlpQWviGMYh7tOsWODdtcUzVrOaQXWiPX1+kZ5lZ21+cWE+zDbrFkmrecX0laT2FzEEb+D3ruQs4fEkwG6d7U4wVcozKIz3soV9V/5p4X+cgHi1AEuZGfUgQtxH6aHZXwnNIH6cOavQxGm1qnGsvB4eq0lfKo/dMJ2wrebbznmg09IjQOipNYPm0jiIbSl1VOt0iQ0FhMPYUDBcguMXVA5OCKHd2Xuw+M4s9cZs3EFIbmlwZE66eO/GJalV6w52Cs+Hnqqpo5QxNZ65/DIMP4docT6LBrKvMAK1cI=

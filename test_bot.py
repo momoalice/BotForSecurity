@@ -12,5 +12,9 @@ class TestBot(unittest.TestCase):
 	def test_severity(self):
 		self.assertEqual("high","high")
 
+	def test_token(self):
+		print(os.environ.get('SLACK_BOT_TOKEN'))
+		self.assertTrue(os.environ.get('SLACK_BOT_TOKEN') != None)
+
 if __name__ == '__main__':
 	unittest.main()
