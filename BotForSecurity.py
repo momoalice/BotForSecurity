@@ -36,39 +36,53 @@ def is_for_me(event):
         channel = event.get('channel')
         if slack_mention in text.strip().split():
             return True
+def postCounts(message, user, channel,last_command):
+	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Access <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
+	post_message(message=response, channel=channel)
+	return "Counts"
+
+def postSample(message, user, channel,last_command):
+	print("Sample start")
+	if len(message) != 2:
+		response = "Invalid input. Sample command takes in one argument. Please reenter"
+		post_message(message=response, channel=channel)
+		return "Counts"
+	else :
+		rdm_list = [item_list[i] for i in sorted(random.sample(range(len(item_list)),int(message[1])))]
+		response = ""
+		for i in range((len(rdm_list))):
+			curr_cve = rdm_list[i]
+			response += str(i+1) +" " +curr_cve["cve"]["description"]["description_data"][0]["value"] + "\n"
+		post_message(message=response, channel=channel)
+		return "Sample"
+
+def postSearch(message, user, channel,last_command):
+	if len(message) != 2:
+		response = "Invalid input. Sample command takes in one argument. Please reenter."
+		post_message(message=response, channel=channel)
+	else :
+		response = ""
+		keyword = message[1]
+		for cve in item_list:
+			curr_des = cve["cve"]["description"]["description_data"][0]["value"]
+			if keyword in curr_des:
+				response += str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
+		post_message(message=response, channel=channel)
+	return "Search"
+
+
 def handle_message(message, user, channel,last_command):
     # TODO Implement later
     message = message.split(" ")
     if message[0] == 'Counts':
-    	response = "There are %s vulnarable data entries in our current database.\n If you want to access some random ones to see what kind of info we get, enter Access <NUM_You_Want>" % d["CVE_data_numberOfCVEs"]
-    	post_message(message=response, channel=channel)
+    	return postCounts(message, user, channel,last_command)
     elif last_command == "Counts" and message[0] == "Sample":
-    	if len(message) != 2:
-    		response = "Invalid input. Sample command takes in one argument. Please reenter"
-    		post_message(message=response, channel=channel)
-    		return "Counts"
-    	else :
-    		rdm_list = [item_list[i] for i in sorted(random.sample(range(len(item_list)),4))]
-    		response = ""
-    		for i in range((len(rdm_list))):
-    			curr_cve = rdm_list[i]
-    			response += str(i+1) +" " +curr_cve["cve"]["description"]["description_data"][0]["value"] + "\n"
-    		post_message(message=response, channel=channel)
+    	return postSample(message, user, channel,last_command)
     elif message[0] == 'Recent':
     	response = 'To be implemented'
     	post_message(message=response, channel=channel)
     elif message[0] == 'Search':
-    	if len(message) != 2:
-    		response = "Invalid input. Sample command takes in one argument. Please reenter."
-    		post_message(message=response, channel=channel)
-    	else :
-    		response = ""
-    		keyword = message[1]
-    		for cve in item_list:
-    			curr_des = cve["cve"]["description"]["description_data"][0]["value"]
-    			if keyword in curr_des:
-    				response += str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
-    		post_message(message=response, channel=channel)
+    	postSearch(message, user, channel,last_command)
     elif message[0] == 'Types':
     	response == 'To be implemented'
     	post_message(message=response, channel=channel)
