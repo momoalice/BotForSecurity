@@ -2,6 +2,7 @@ import os
 import time
 import json
 from slackclient import SlackClient
+import random
 
 BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
 BOT_ID = 'U7RM6DJTC'
@@ -10,6 +11,7 @@ SOCKET_DELAY = 1
 with open('nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
+item_list = d["CVE_Items"]
 default_msg = "Hi, this is BotForSecurity. Here are a couple of command:\n1. Counts: return how many data entries do we have\n \t\t subcommand: Access <NUM>\n2. Recent: Get the description for the most recent insecurity\n 3. Latest: Get the time for the most recent insecure activity\n 4. Types: Get all the types of insecure activities"
 
 slack_client = SlackClient(BOT_TOKEN)
@@ -46,7 +48,11 @@ def handle_message(message, user, channel,last_command):
     		post_message(message=response, channel=channel)
     		return "Counts"
     	else :
-    		response = message[1] + " to be implemented"
+    		rdm_list = [item_list[i] for i in sorted(random.sample(range(len(item_list)),4))]
+    		response = ""
+    		for i in range((len(rdm_list))):
+    			curr_cve = rdm_list[i]
+    			response += str(i+1) +" " +curr_cve["cve"]["description"]["description_data"][0]["value"] + "\n"
     		post_message(message=response, channel=channel)
     elif message[0] == 'Recent':
     	response = 'To be implemented'
