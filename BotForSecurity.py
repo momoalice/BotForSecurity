@@ -65,7 +65,7 @@ def postSearch(message, user, channel,last_command):
 		keyword = message[1]
 		for cve in item_list:
 			curr_des = cve["cve"]["description"]["description_data"][0]["value"]
-			if keyword in curr_des:
+			if keyword.lower() in curr_des.lower():
 				response += str(cve["lastModifiedDate"]) +" "+ curr_des + "\n"
 		post_message(message=response, channel=channel)
 	return "Search"
@@ -74,16 +74,16 @@ def postSearch(message, user, channel,last_command):
 def handle_message(message, user, channel,last_command):
     # TODO Implement later
     message = message.split(" ")
-    if message[0] == 'Counts':
+    if message[0].lower() == 'counts':
     	return postCounts(message, user, channel,last_command)
     elif last_command == "Counts" and message[0] == "Sample":
     	return postSample(message, user, channel,last_command)
-    elif message[0] == 'Recent':
+    elif message[0].lower() == 'recent':
     	response = 'To be implemented'
     	post_message(message=response, channel=channel)
-    elif message[0] == 'Search':
+    elif message[0].lower() == 'search':
     	postSearch(message, user, channel,last_command)
-    elif message[0] == 'Types':
+    elif message[0].lower() == 'yypes':
     	response == 'To be implemented'
     	post_message(message=response, channel=channel)
     else:
