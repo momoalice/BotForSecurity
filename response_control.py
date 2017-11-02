@@ -1,7 +1,7 @@
 import json
 import random
 
-with open('../nvdcve-1.0-recent.json') as json_data:
+with open('data/nvdcve-1.0-recent.json') as json_data:
 	d = json.load(json_data)
 
 item_list = d["CVE_Items"]
