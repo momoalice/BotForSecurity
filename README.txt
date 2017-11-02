@@ -31,8 +31,7 @@ The user could search for a specific keyword in the description of events becaus
 Same with the Specific in Severity.
 
 Testing:
-Update: I will be implementing the unit testing and integrated testing very soon. I have set up travis and read into how to do unit testing. 
 
 I implemented them by first created the skeleton that specify all the command I want to implement and then implement them one by one. For each functionality, I refract out the kernal code for it into a new helper method so that I could later maintain it and modify it more easily without creating destruction to other part. I tested each one of them after finishing its implementation. After finishing all the functionalities of it, I tested it integratively on Slack also. 
 
-I first test whether the token is correctly set up so that Bot could be connected sucessfully. I then finished the unit test for Counts functionality. Finish the testing for Specific, Search, Severity functionality. Especially need testing when the user give an invalid input. (All unit tests finished. Fix multiple bugs in my code)
+Unit test: I first test whether the token is correctly set up so that Bot could be connected sucessfully. I then finished the unit test for Counts functionality. Finish the testing for Specific, Search, Severity functionality. Especially need testing when the user give an invalid input. (All unit tests finished. Fix multiple bugs in my code)
