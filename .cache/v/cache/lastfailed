@@ -1,5 +1,4 @@
 {
   "test_bot.py::TestBot::test_token": true,
-  "tests/test_response.py": true,
-  "tests/test_response_control.py::TestBot::test_token": true
+  "tests/test_response.py": true
 }

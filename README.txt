@@ -23,7 +23,7 @@ This command sample some random CVE descriptions to let the user get some idea w
 2. Severity
 This command gives the user the information of all the CVE entries that has the severities the user specified. The user may be interested in events that have a certain severity. There are three levels: (low, medium, high). Note that not all CVE entries contain severity info so we have to do exception check to prevent the program from crashing. Because there might be many entries, the user has the choice to specify how many entries they want to at this time.
 2.1 Specific
-After seeing a list of events, the user can spefify to see one specific one by it's ID. We will give more detailed info about that event, including the reference links so that user could get some outside source.
+After seeing a list of events, the user can spefify to see one specific one by it's ID. We will give more detailed info about that event, including the reference links so that user could get some outside source. But we still handle the situation where user 
 
 3. Search
 The user could search for a specific keyword in the description of events because they might be interested in a specific company or website or product.  Because there might be many entries, the user has the choice to specify how many entries they want to at this time.

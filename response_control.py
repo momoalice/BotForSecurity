@@ -65,7 +65,7 @@ def postSearch(message,last_command):
 			response += str(i+1) +". "+curr_cve["cve"]["CVE_data_meta"]["ID"]+" " +curr_cve["cve"]["description"]["description_data"][0]["value"] + "\n"
 		response += "See more info about a specific event by id in form of: Specific CVE-xxxx-xxxx\n"
 	else:
-		response = "Invalid input. Search command takes in at most 2 arguments. Please reenter. \n The valid form is: " + search_cmd
+		response = "Invalid input. Search command takes in one or two arguments. Please reenter."
 		rtn_msg = last_command
 	return response, rtn_msg
 
@@ -112,7 +112,7 @@ def postSeverity(message,last_command):
 		response += "See more info about a specific event by id in form of: Specific CVE-xxxx-xxxx\n"
 
 	else:
-		response = "Invalid input. Severity command takes in one argument. Please reenter."
+		response = "Invalid input. Severity command takes in one or two argument. Please reenter."
 		rtn_msg = last_command
 	return response, rtn_msg
 
