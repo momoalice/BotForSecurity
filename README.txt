@@ -1,7 +1,9 @@
 Motong Chen
 BotForSecurity
 
-I develop this Bot based on Slack. This Bot can execute 5 different commands and there is hierarchy among these commands. The user can only excute some command after excecuting another one so that we make sure there would be less input error (i.e. random wrong ID user makes up). Here are the commands:
+I develop this Bot based on Slack. This Bot can execute 5 different commands and there is hierarchy among these commands. The user can only excute some command after excecuting another one so that we make sure there would be less input error (i.e. random wrong ID user makes up). The Bot would know whether this command is directed towards it in a channel by checking the mention.
+
+Here are the commands:
 
 1. Counts: return how many data entries do we have. Optional third param: how many entries do you want to see (randomly selected).
          subcommand: Sample <NUM>
