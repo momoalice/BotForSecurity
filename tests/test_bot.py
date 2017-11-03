@@ -1,7 +1,7 @@
 # Integration test
 import pytest
 import sys
-sys.path.append('/Users/alice/Desktop/BotForSecurity')
+sys.path.append('../BotForSecurity')
 from BotForSecurity.Bot import *
 
 def test_handle():
