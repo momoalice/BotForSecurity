@@ -1,11 +1,5 @@
 {
   "test_bot.py::TestBot::test_token": true,
   "tests/test_response.py": true,
-  "tests/test_response_control.py::TestBot": true,
-  "tests/test_response_control.py::TestBot::test_Sample": true,
-  "tests/test_response_control.py::TestBot::test_Search": true,
-  "tests/test_response_control.py::TestBot::test_Severity": true,
-  "tests/test_response_control.py::TestBot::test_counts": true,
-  "tests/test_response_control.py::TestBot::test_specific": true,
   "tests/test_response_control.py::TestBot::test_token": true
 }
