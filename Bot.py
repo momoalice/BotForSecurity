@@ -42,7 +42,10 @@ def handle_message(message, user, channel,last_command):
     rtn_msg = last_command
     print(message)
     message = message.split(" ")
-    message.remove(slack_mention)
+    try :
+        message.remove(slack_mention)
+    except ValueError:
+        print("no mention")
     print(message)
     if len(message) != 0:
         if message[0].lower() == 'counts':
