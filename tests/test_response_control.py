@@ -35,21 +35,6 @@ class TestBot(unittest.TestCase):
 		self.assertTrue(postSeverity(["Severity"], "Counts")[0] == expected_error_output and postSeverity(["Severity"], "Counts")[1].lower() == "counts")
 
 
-	# def test_handle(self):
-	# 	# Test invalid input
-	# 	actual_return_1 = BotForSecurity.handle_message("Hello",None, None, "Counts").lower()
-	# 	expected_return_1 = "counts"
-	# 	# Test valid subcommand yet not following its master command
-	# 	actual_return_2 = BotForSecurity.handle_message("Specific 1",None, None, "Counts").lower()
-	# 	expected_return_2 = "counts"
-	# 	# Test valid subcommand
-	# 	actual_return_3 = BotForSecurity.handle_message("Specific 1",None, None, "Search").lower()
-	# 	expected_return_3 = "specific"
-	# 	self.assertEqual(actual_return_1 , expected_return_1)
-	# 	self.assertEqual(actual_return_2 , expected_return_2)
-	# 	self.assertEqual(actual_return_3 , expected_return_3)
-
-
 	
 
 if __name__ == '__main__':
